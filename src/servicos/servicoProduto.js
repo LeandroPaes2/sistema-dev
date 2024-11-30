@@ -1,4 +1,4 @@
-const urlBase = 'https://bcc-backend-lp-2.vercel.app/produtos';
+const urlBase = 'https://bcc-backend-lp-2-pi.vercel.app/produtos';
 //const urlBase = 'http://localhost:4000/produtos';
 
 export async function gravarProduto(produto){
