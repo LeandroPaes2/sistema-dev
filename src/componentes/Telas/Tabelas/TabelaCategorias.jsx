@@ -64,9 +64,10 @@ export default function TabelaCategorias(props) {
                             </tr>
                         </thead>
                         <tbody>
+                            
                             {listaDeCategorias?.map((categoria) => {
                                 return(
-                                <tr>
+                                <tr key={categoria.codigo}>
                                     <td>{categoria.codigo}</td>
                                     <td>{categoria.descricao}</td>
                                     <td>

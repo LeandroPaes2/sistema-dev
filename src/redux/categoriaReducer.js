@@ -13,7 +13,7 @@ export const buscarCategorias = createAsyncThunk('buscarCategoria', async ()=>{
             return {
                 "status":true,
                 "mensagem":"Categorias recuperados com sucesso",
-                "listaDeCategoria":resultado
+                "listaDeCategoria": resultado,
             }
         }
         else
