@@ -1,48 +1,48 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { consultarCategoria, gravarCategoria, alterarCategoria, excluirCategoria } from "../servicos/servicoCategoria";
+import { consultarUsuario, gravarUsuario, alterarUsuario, excluirUsuario } from "../servicos/servicoUsuario";
 import ESTADO from "./estados";
 
-export const buscarCategorias = createAsyncThunk('buscarCategorias', async(codigo)=>{
-    const resultado = await consultarCategoria(codigo);
+export const buscarUsuarios = createAsyncThunk('buscarUsuarios', async(codigo)=>{
+    const resultado = await consultarUsuario(codigo);
     try{
         if (Array.isArray(resultado)) {
             return {
                 "status": true,
-                "mensagem": "Categorias recuperados com sucesso",
-                "listaDeCategorias":resultado
+                "mensagem": "Usuarios recuperados com sucesso",
+                "listaDeUsuarios":resultado
             }
         }
         else {
             return {
                 "status": false,
-                "mensagem": "Erro ao recuperar os categorias do backend",
-                "listaDeCategorias": []
+                "mensagem": "Erro ao recuperar os Usuarios do backend",
+                "listaDeUsuarios": []
             }
         }
     }catch (erro) {
         return {
             "status": false,
             "mensagem": "Erro :" + erro.message,
-            "listaDeCategorias": []
+            "listaDeUsuarios": []
         }
 
     }
 });
 
-export const apagarCategoria = createAsyncThunk('apagarCategoria', async(categoria)=>{
-    const resultado = await excluirCategoria(categoria);
+export const apagarUsuario = createAsyncThunk('apagarUsuario', async(usuario)=>{
+    const resultado = await excluirUsuario(usuario);
     try{
         if (resultado.status) {
             return {
                 "status": true,
-                "mensagem": "Categoria excluida com sucesso",
-                "codigo":categoria.codigo
+                "mensagem": "Usuario excluida com sucesso",
+                "codigo":usuario.codigo
             }
         }
         else {
             return {
                 "status": false,
-                "mensagem": "Erro ao excluir os categorias do backend"
+                "mensagem": "Erro ao excluir os Usuarios do backend"
             }
         }
     }catch (erro) {
@@ -54,15 +54,15 @@ export const apagarCategoria = createAsyncThunk('apagarCategoria', async(categor
     }
 });
 
-export const incluirCategoria = createAsyncThunk('incluirCategoria', async(categoria)=>{
-        const resultado = await gravarCategoria(categoria);
+export const incluirUsuario = createAsyncThunk('incluirUsuario', async(usuario)=>{
+        const resultado = await gravarUsuario(usuario);
         try{
             if(resultado.status){
-                categoria.codigo = resultado.codigo;
+                usuario.codigo = resultado.codigo;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
-                    "categoria":categoria
+                    "usuario":usuario
                 }
             }
             else{
@@ -80,15 +80,15 @@ export const incluirCategoria = createAsyncThunk('incluirCategoria', async(categ
         }
 })
 
-export const atualizarCategoria = createAsyncThunk('atualizarCategoria', async(categoria)=>{
-        const resultado = await alterarCategoria(categoria);
+export const atualizarUsuario = createAsyncThunk('atualizarUsuario', async(usuario)=>{
+        const resultado = await alterarUsuario(usuario);
         try{
             if(resultado.status){
-                categoria.codigo = resultado.codigo;
+                usuario.codigo = resultado.codigo;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
-                    "categoria":categoria
+                    "usuario":usuario
                 }
             }
             else{
@@ -106,94 +106,94 @@ export const atualizarCategoria = createAsyncThunk('atualizarCategoria', async(c
         }
 })
 
-const categoriaReducer = createSlice({
-    name:"categoria",
+const usuarioReducer = createSlice({
+    name:"usuario",
     initialState:{
         estado: ESTADO.OCIOSO,
         mensagem:"",
-        listaDeCategorias:[]
+        listaDeUsuarios:[]
     },
     reducers:{},
     extraReducers:(builder)=>{
-        builder.addCase(buscarCategorias.pending,(state)=>{
+        builder.addCase(buscarUsuarios.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (buscando categorias)"
+             state.mensagem= "Processando requisição (buscando Usuarios)"
         })
-        .addCase(buscarCategorias.fulfilled,(state,action)=>{
+        .addCase(buscarUsuarios.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeUsuarios= action.payload.listaDeUsuarios
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeUsuarios= action.payload.listaDeUsuarios
             }
         })
-        .addCase(buscarCategorias.rejected, (state,action)=>{
+        .addCase(buscarUsuarios.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeUsuarios= action.payload.listaDeUsuarios
         })
-        .addCase(apagarCategoria.pending,(state)=>{
+        .addCase(apagarUsuario.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (excluindo categorias)"
+             state.mensagem= "Processando requisição (excluindo Usuarios)"
         })
-        .addCase(apagarCategoria.fulfilled,(state,action)=>{
+        .addCase(apagarUsuario.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= state.listaDeCategorias.filter((item)=>item.codigo!==action.payload.codigo)
+                state.listaDeUsuarios= state.listaDeUsuarios.filter((item)=>item.codigo!==action.payload.codigo)
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
             }
         })
-        .addCase(apagarCategoria.rejected, (state,action)=>{
-            state.estado=ESTADO.ERRO;
-            state.mensagem=action.payload.mensagem;
-        })
-        .addCase(incluirCategoria.pending,(state)=>{
-             state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (incluindo categorias)"
-        })
-        .addCase(incluirCategoria.fulfilled,(state,action)=>{
-            if(action.payload.status){
-                state.estado=ESTADO.OCIOSO;
-                state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias.push(action.payload.categoria)
-            }
-            else{
-                state.estado=ESTADO.ERRO;
-                state.mensagem=action.payload.mensagem;
-            }
-        })
-        .addCase(incluirCategoria.rejected, (state,action)=>{
+        .addCase(apagarUsuario.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
             state.mensagem=action.payload.mensagem;
         })
-        .addCase(atualizarCategoria.pending,(state)=>{
+        .addCase(incluirUsuario.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (atualizando categorias)"
+             state.mensagem= "Processando requisição (incluindo Usuarios)"
         })
-        .addCase(atualizarCategoria.fulfilled,(state,action)=>{
+        .addCase(incluirUsuario.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= state.listaDeCategorias.map((item)=>item.codigo===action.payload.categoria.codigo ? action.payload.categoria : item)
+                state.listaDeUsuarios.push(action.payload.usuario)
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
             }
         })
-        .addCase(atualizarCategoria.rejected, (state,action)=>{
+        .addCase(incluirUsuario.rejected, (state,action)=>{
+            state.estado=ESTADO.ERRO;
+            state.mensagem=action.payload.mensagem;
+        })
+        .addCase(atualizarUsuario.pending,(state)=>{
+             state.estado=ESTADO.PENDENTE
+             state.mensagem= "Processando requisição (atualizando Usuarios)"
+        })
+        .addCase(atualizarUsuario.fulfilled,(state,action)=>{
+            if(action.payload.status){
+                state.estado=ESTADO.OCIOSO;
+                state.mensagem=action.payload.mensagem;
+                state.listaDeUsuarios= state.listaDeUsuarios.map((item)=>item.codigo===action.payload.usuario.codigo ? action.payload.usuario : item)
+            }
+            else{
+                state.estado=ESTADO.ERRO;
+                state.mensagem=action.payload.mensagem;
+            }
+        })
+        .addCase(atualizarUsuario.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
             state.mensagem=action.payload.mensagem;
         })
     }
 })
 
-export default categoriaReducer.reducer;
+export default usuarioReducer.reducer;

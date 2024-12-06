@@ -1,48 +1,48 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { consultarCategoria, gravarCategoria, alterarCategoria, excluirCategoria } from "../servicos/servicoCategoria";
+import { consultarFornecedor, gravarFornecedor, alterarFornecedor, excluirFornecedor } from "../servicos/servicoFornecedor";
 import ESTADO from "./estados";
 
-export const buscarCategorias = createAsyncThunk('buscarCategorias', async(codigo)=>{
-    const resultado = await consultarCategoria(codigo);
+export const buscarFornecedores = createAsyncThunk('buscarFornecedores', async(codigo)=>{
+    const resultado = await consultarFornecedor(codigo);
     try{
         if (Array.isArray(resultado)) {
             return {
                 "status": true,
-                "mensagem": "Categorias recuperados com sucesso",
-                "listaDeCategorias":resultado
+                "mensagem": "Fornecedores recuperados com sucesso",
+                "listaDeFornecedores":resultado
             }
         }
         else {
             return {
                 "status": false,
-                "mensagem": "Erro ao recuperar os categorias do backend",
-                "listaDeCategorias": []
+                "mensagem": "Erro ao recuperar os Fornecedores do backend",
+                "listaDeFornecedores": []
             }
         }
     }catch (erro) {
         return {
             "status": false,
             "mensagem": "Erro :" + erro.message,
-            "listaDeCategorias": []
+            "listaDeFornecedores": []
         }
 
     }
 });
 
-export const apagarCategoria = createAsyncThunk('apagarCategoria', async(categoria)=>{
-    const resultado = await excluirCategoria(categoria);
+export const apagarFornecedor = createAsyncThunk('apagarFornecedor', async(fornecedor)=>{
+    const resultado = await excluirFornecedor(fornecedor);
     try{
         if (resultado.status) {
             return {
                 "status": true,
-                "mensagem": "Categoria excluida com sucesso",
-                "codigo":categoria.codigo
+                "mensagem": "Fornecedor excluida com sucesso",
+                "codigo":fornecedor.codigo
             }
         }
         else {
             return {
                 "status": false,
-                "mensagem": "Erro ao excluir os categorias do backend"
+                "mensagem": "Erro ao excluir os fornecedores do backend"
             }
         }
     }catch (erro) {
@@ -54,15 +54,15 @@ export const apagarCategoria = createAsyncThunk('apagarCategoria', async(categor
     }
 });
 
-export const incluirCategoria = createAsyncThunk('incluirCategoria', async(categoria)=>{
-        const resultado = await gravarCategoria(categoria);
+export const incluirFornecedor = createAsyncThunk('incluirFornecedor', async(fornecedor)=>{
+        const resultado = await gravarFornecedor(fornecedor);
         try{
             if(resultado.status){
-                categoria.codigo = resultado.codigo;
+                fornecedor.codigo = resultado.codigo;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
-                    "categoria":categoria
+                    "fornecedor":fornecedor
                 }
             }
             else{
@@ -80,15 +80,15 @@ export const incluirCategoria = createAsyncThunk('incluirCategoria', async(categ
         }
 })
 
-export const atualizarCategoria = createAsyncThunk('atualizarCategoria', async(categoria)=>{
-        const resultado = await alterarCategoria(categoria);
+export const atualizarFornecedor = createAsyncThunk('atualizarFornecedor', async(fornecedor)=>{
+        const resultado = await alterarFornecedor(fornecedor);
         try{
             if(resultado.status){
-                categoria.codigo = resultado.codigo;
+                fornecedor.codigo = resultado.codigo;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
-                    "categoria":categoria
+                    "fornecedor":fornecedor
                 }
             }
             else{
@@ -106,94 +106,94 @@ export const atualizarCategoria = createAsyncThunk('atualizarCategoria', async(c
         }
 })
 
-const categoriaReducer = createSlice({
-    name:"categoria",
+const fornecedorReducer = createSlice({
+    name:"fornecedor",
     initialState:{
         estado: ESTADO.OCIOSO,
         mensagem:"",
-        listaDeCategorias:[]
+        listaDeFornecedores:[]
     },
     reducers:{},
     extraReducers:(builder)=>{
-        builder.addCase(buscarCategorias.pending,(state)=>{
+        builder.addCase(buscarFornecedores.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (buscando categorias)"
+             state.mensagem= "Processando requisição (buscando fornecedores)"
         })
-        .addCase(buscarCategorias.fulfilled,(state,action)=>{
+        .addCase(buscarFornecedores.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeFornecedores= action.payload.listaDeFornecedores
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeFornecedores= action.payload.listaDeFornecedores
             }
         })
-        .addCase(buscarCategorias.rejected, (state,action)=>{
+        .addCase(buscarFornecedores.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= action.payload.listaDeCategorias
+                state.listaDeFornecedores= action.payload.listaDeFornecedores
         })
-        .addCase(apagarCategoria.pending,(state)=>{
+        .addCase(apagarFornecedor.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (excluindo categorias)"
+             state.mensagem= "Processando requisição (excluindo fornecedores)"
         })
-        .addCase(apagarCategoria.fulfilled,(state,action)=>{
+        .addCase(apagarFornecedor.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= state.listaDeCategorias.filter((item)=>item.codigo!==action.payload.codigo)
+                state.listaDeFornecedores= state.listaDeFornecedores.filter((item)=>item.codigo!==action.payload.codigo)
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
             }
         })
-        .addCase(apagarCategoria.rejected, (state,action)=>{
-            state.estado=ESTADO.ERRO;
-            state.mensagem=action.payload.mensagem;
-        })
-        .addCase(incluirCategoria.pending,(state)=>{
-             state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (incluindo categorias)"
-        })
-        .addCase(incluirCategoria.fulfilled,(state,action)=>{
-            if(action.payload.status){
-                state.estado=ESTADO.OCIOSO;
-                state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias.push(action.payload.categoria)
-            }
-            else{
-                state.estado=ESTADO.ERRO;
-                state.mensagem=action.payload.mensagem;
-            }
-        })
-        .addCase(incluirCategoria.rejected, (state,action)=>{
+        .addCase(apagarFornecedor.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
             state.mensagem=action.payload.mensagem;
         })
-        .addCase(atualizarCategoria.pending,(state)=>{
+        .addCase(incluirFornecedor.pending,(state)=>{
              state.estado=ESTADO.PENDENTE
-             state.mensagem= "Processando requisição (atualizando categorias)"
+             state.mensagem= "Processando requisição (incluindo fornecedores)"
         })
-        .addCase(atualizarCategoria.fulfilled,(state,action)=>{
+        .addCase(incluirFornecedor.fulfilled,(state,action)=>{
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeCategorias= state.listaDeCategorias.map((item)=>item.codigo===action.payload.categoria.codigo ? action.payload.categoria : item)
+                state.listaDeFornecedores.push(action.payload.fornecedor)
             }
             else{
                 state.estado=ESTADO.ERRO;
                 state.mensagem=action.payload.mensagem;
             }
         })
-        .addCase(atualizarCategoria.rejected, (state,action)=>{
+        .addCase(incluirFornecedor.rejected, (state,action)=>{
+            state.estado=ESTADO.ERRO;
+            state.mensagem=action.payload.mensagem;
+        })
+        .addCase(atualizarFornecedor.pending,(state)=>{
+             state.estado=ESTADO.PENDENTE
+             state.mensagem= "Processando requisição (atualizando fornecedores)"
+        })
+        .addCase(atualizarFornecedor.fulfilled,(state,action)=>{
+            if(action.payload.status){
+                state.estado=ESTADO.OCIOSO;
+                state.mensagem=action.payload.mensagem;
+                state.listaDeFornecedores= state.listaDeFornecedores.map((item)=>item.codigo===action.payload.fornecedor.codigo ? action.payload.fornecedor : item)
+            }
+            else{
+                state.estado=ESTADO.ERRO;
+                state.mensagem=action.payload.mensagem;
+            }
+        })
+        .addCase(atualizarFornecedor.rejected, (state,action)=>{
             state.estado=ESTADO.ERRO;
             state.mensagem=action.payload.mensagem;
         })
     }
 })
 
-export default categoriaReducer.reducer;
+export default fornecedorReducer.reducer;
