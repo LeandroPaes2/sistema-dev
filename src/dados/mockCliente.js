@@ -1,10 +1,10 @@
 export const usuarios = [
 
     {
-        "codigo": 1,
+        "id": 1,
         "nome": "Fafa",
-        "endereco": "Casa",
-        "contato": "Não me liguem",
+        "email": "Fafa@gmail.com",
+        "telefone": "Não me liguem",
         "cpf": "40020921"
     }
 ]

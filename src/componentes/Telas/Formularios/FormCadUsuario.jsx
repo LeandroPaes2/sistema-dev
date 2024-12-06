@@ -15,12 +15,11 @@ export default function FormCadUsuarios(props){
 
     function zeraUsuario() {
         props.setUsuarioSelecionado({
-        "codigo": 0,
+        "id": 0,
         "nome": "",
         "endereco": "",
-        "contato": "",
-        "cpf": ""
-        });
+        "senha": ""
+    });
     }
 
     const manipularSubmissao = (event) => {
@@ -91,9 +90,9 @@ export default function FormCadUsuarios(props){
                     <Form.Control
                         required
                         type="text"
-                        id="codigo"
-                        name="codigo"
-                        value={props.usuario.codigo}
+                        id="id"
+                        name="id"
+                        value={props.usuario.id}
                         onChange={manipularMudanca}
                         disabled={props.modoEdicao}  
                     />
@@ -130,30 +129,16 @@ export default function FormCadUsuarios(props){
             </Row>
             <Row className="mb-4">
                 <Form.Group as={Col} md="4">
-                    <Form.Label>Contato</Form.Label>
+                    <Form.Label>senha</Form.Label>
                     <Form.Control
                         required
                         type="text"
-                        id="contato"
-                        name="contato"
-                        value={props.usuario.contato}
+                        id="senha"
+                        name="senha"
+                        value={props.usuario.senha}
                         onChange={manipularMudanca}
                     />
-                    <Form.Control.Feedback type='invalid'>Por favor, informe o Contato do usuario!</Form.Control.Feedback>
-                </Form.Group>
-            </Row>
-            <Row className="mb-4">
-                <Form.Group as={Col} md="4">
-                    <Form.Label>CPF</Form.Label>
-                    <Form.Control
-                        required
-                        type="text"
-                        id="cpf"
-                        name="cpf"
-                        value={props.usuario.cpf}
-                        onChange={manipularMudanca} 
-                    />
-                    <Form.Control.Feedback type='invalid'>Por favor, informe o CPF do usuario!</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>Por favor, informe o senha do usuario!</Form.Control.Feedback>
                 </Form.Group>
             </Row>
             <Row className='mt-2 mb-2'>

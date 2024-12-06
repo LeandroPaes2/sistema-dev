@@ -26,11 +26,10 @@ export default function TabelaUsuario(props) {
         props.setModoEdicao(true);
         props.setExibirTabela(false);
         props.setUsuarioSelecionada({
-            "codigo": usuario.codigo,
+            "id": usuario.id,
             "nome": usuario.nome,
             "endereco": usuario.endereco,
-            "contato": usuario.contato,
-            "cpf": usuario.cpf
+            "senha": usuario.senha
         });
     }
 
@@ -72,8 +71,7 @@ export default function TabelaUsuario(props) {
                         <th>Código</th>
                         <th>Nome</th>
                         <th>Endereço</th>
-                        <th>Contato</th>
-                        <th>CPF</th>
+                        <th>senha</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -81,12 +79,11 @@ export default function TabelaUsuario(props) {
                     {
                             listaDeUsuarios?.map((usuario) => {
                             return (
-                                <tr key={usuario.codigo}>
-                                    <td>{usuario.codigo}</td>
+                                <tr key={usuario.id}>
+                                    <td>{usuario.id}</td>
                                     <td>{usuario.nome}</td>
                                     <td>{usuario.endereco}</td>
-                                    <td>{usuario.contato}</td>
-                                    <td>{usuario.cpf}</td>
+                                    <td>{usuario.senha}</td>
                                     <td>
                                         <Button onClick={() => {
                                             alterarUsuario(usuario);

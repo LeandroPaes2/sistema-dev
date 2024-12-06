@@ -1,4 +1,4 @@
-const urlBase = 'https://bcc-backend-lp-2-pi.vercel.app/Clientes';
+const urlBase = 'https://bcc-backend-lp-2-pi.vercel.app/clientes';
 
 export async function gravarCliente(cliente){
     const resposta = await fetch(urlBase,{
@@ -25,7 +25,7 @@ export async function alterarCliente(cliente){
 }
 
 export async function excluirCliente(cliente){
-    const resposta = await fetch(urlBase + "/" + cliente.codigo,{
+    const resposta = await fetch(urlBase + "/" + cliente.id,{
         'method':"DELETE",
     });
     const resultado = await resposta.json();

@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { consultarCliente, gravarCliente, alterarCliente, excluirCliente } from "../servicos/servicoCliente";
 import ESTADO from "./estados";
 
-export const buscarClientes = createAsyncThunk('buscarClientes', async(codigo)=>{
-    const resultado = await consultarCliente(codigo);
+export const buscarClientes = createAsyncThunk('buscarClientes', async(id)=>{
+    const resultado = await consultarCliente(id);
     try{
         if (Array.isArray(resultado)) {
             return {
@@ -36,7 +36,7 @@ export const apagarCliente = createAsyncThunk('apagarCliente', async(cliente)=>{
             return {
                 "status": true,
                 "mensagem": "Cliente excluida com sucesso",
-                "codigo":cliente.codigo
+                "id":cliente.id
             }
         }
         else {
@@ -58,7 +58,7 @@ export const incluirCliente = createAsyncThunk('incluirCliente', async(cliente)=
         const resultado = await gravarCliente(cliente);
         try{
             if(resultado.status){
-                cliente.codigo = resultado.codigo;
+                cliente.id = resultado.id;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
@@ -84,7 +84,7 @@ export const atualizarCliente = createAsyncThunk('atualizarCliente', async(clien
         const resultado = await alterarCliente(cliente);
         try{
             if(resultado.status){
-                cliente.codigo = resultado.codigo;
+                cliente.id = resultado.id;
                 return {
                     "status": resultado.status,
                     "mensagem": resultado.mensagem,
@@ -144,7 +144,7 @@ const clienteReducer = createSlice({
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeClientes= state.listaDeClientes.filter((item)=>item.codigo!==action.payload.codigo)
+                state.listaDeClientes= state.listaDeClientes.filter((item)=>item.id!==action.payload.id)
             }
             else{
                 state.estado=ESTADO.ERRO;
@@ -182,7 +182,7 @@ const clienteReducer = createSlice({
             if(action.payload.status){
                 state.estado=ESTADO.OCIOSO;
                 state.mensagem=action.payload.mensagem;
-                state.listaDeClientes= state.listaDeClientes.map((item)=>item.codigo===action.payload.cliente.codigo ? action.payload.cliente : item)
+                state.listaDeClientes= state.listaDeClientes.map((item)=>item.id===action.payload.cliente.id ? action.payload.cliente : item)
             }
             else{
                 state.estado=ESTADO.ERRO;

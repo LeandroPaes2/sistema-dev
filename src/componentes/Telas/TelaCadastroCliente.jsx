@@ -10,10 +10,10 @@ export default function TelaCadastroCliente(props){
     const [exibirTabela, setExibirTabela] = useState(true);
     const [modoEdicao, setModoEdicao] = useState(false); 
     const [Clienteselecionado, setClienteselecionado] = useState({
-        "codigo": 0,
+        "id": 0,
         "nome": "",
-        "endereco": "",
-        "contato": "",
+        "email": "",
+        "telefone": "",
         "cpf": ""
     }); 
     const [listaDeClientes,setListaDeClientes]=useState([]);
